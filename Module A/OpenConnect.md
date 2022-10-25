@@ -1,3 +1,9 @@
+#Включение IP маршрутизации на CA-RTR и BR-RTR
+vim /etc/sysctl.conf
+net.ipv4.ip_forward = 1
+
+sysctl -p
+
 #Установка OpenConnect server на CA-RTR
 apt update
 apt install ocserv
