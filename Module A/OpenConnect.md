@@ -12,6 +12,8 @@ deb http://deb.debian.org/debian/ stretch main
 apt update
 apt install ocserv
 systemctl status ocserv
+sudo ufw allow 654/tcp
+sudo ufw allow 654/udp
 vim /etc/ocserv/ocserv.conf
 auth = "plain[passwd=/etc/ocserv/ocpasswd]"
 tcp-port = 654
@@ -28,3 +30,8 @@ dns = 8.8.4.4
 
 #Создание VPN аккаунтов
 ocpasswd -c /etc/ocserv/ocpasswd username
+
+#NAT
+iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o eth0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 192.168.2.0/24 -o eth0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.66.66.0/24 -o eth0 -j MASQUERADE
