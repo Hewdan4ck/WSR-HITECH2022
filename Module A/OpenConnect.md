@@ -4,7 +4,7 @@ net.ipv4.ip_forward = 1
 
 sysctl -p
 
-#Установка OpenConnect server на CA-RTR
+#Установка и настройка OpenConnect server на CA-RTR
 apt install debian-archive-keyring dirmngr
 vim /etc/apt/sources.list
 deb http://deb.debian.org/debian/ stretch main
@@ -12,8 +12,19 @@ deb http://deb.debian.org/debian/ stretch main
 apt update
 apt install ocserv
 systemctl status ocserv
-ufw allow 80,443/tcp
+vim /etc/ocserv/ocserv.conf
+auth = "plain[passwd=/etc/ocserv/ocpasswd]"
+tcp-port = 654
+udp-port = 654
+server-cert = /etc/ssl/certs/ssl-cert-snakeoil.pem
+server-key = /etc/ssl/private/ssl-cert-snakeoil.key
+keepalive = 30
+try-mtu-discovery = true
+ipv4-network = 10.66.66.0
+ipv4-netmask = 255.255.255.248
+tunnel-all-dns = true
+dns = 8.8.8.8
+dns = 8.8.4.4 
 
-#Установка Certbot на CA-RTR
-apt install certbot
-certbot certonly --standalone --preferred-challenges http --agree-tos 
+#Создание VPN аккаунтов
+ocpasswd -c /etc/ocserv/ocpasswd username
