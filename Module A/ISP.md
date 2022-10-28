@@ -20,3 +20,13 @@ subnet 10.0.0.0 netmask 255.255.255.0 {
 #NAT
 iptables -t nat -A POSTROUTING -s 0.0.0.0/0 -о <Интерфейс с выходом в интернет> -j MASQUERADE
 iptables-save > /etc/iptables.rules
+
+#DNS
+apt install bind9 bind9utils dnsutils -y;
+ufw allow Bind9;
+vim /etc/bind/named.conf.options
+forwarders {
+	8.8.8.8;
+};
+listen-on { 10.0.0.0/8; };
+allow-query { any; };
