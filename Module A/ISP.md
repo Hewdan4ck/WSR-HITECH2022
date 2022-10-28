@@ -31,4 +31,5 @@ forwarders {
 listen-on { 10.0.0.0/8; };
 allow-query { any; };
 
-systemctl restart bind9
+named-checkconf;
+systemctl restart bind9;
