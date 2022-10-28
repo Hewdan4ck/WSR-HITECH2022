@@ -1,5 +1,5 @@
 #Настройка IP маршрутизации
-echo net.ipv4.
+echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf
 
 #Настройка DHCP
 apt install fly-admin-dhcp
