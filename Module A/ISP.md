@@ -24,12 +24,18 @@ iptables-save > /etc/iptables.rules
 #DNS
 apt install bind9 bind9utils dnsutils -y;
 ufw allow Bind9;
-vim /etc/bind/named.conf.options
-forwarders {
-	8.8.8.8;
-};
-listen-on { 10.0.0.0/8; };
-allow-query { any; };
-
+echo '
+options {
+	directory "/var/cache/bind";
+	forwarders {
+		8.8.8.8;
+	};
+	listen-on { 10.0.0.0/8; };
+	allow-query { any; };
+	dnssec-validation auto;
+	auth-nxdomain yes;
+	listen-on-v6 { any; };
+}; ' > /etc/bind/named.conf.options;
 named-checkconf;
 systemctl restart bind9;
+
