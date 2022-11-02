@@ -30,7 +30,7 @@ PrivateKey = '$PrKey'
 Address = 10.77.77.1/30
 ListenPort = 51820
 SaveConfig = false' > /etc/wireguard/server.conf;
-scp -r -P 177 /etc/wireguard/ root@BR-RTR.wsr:/etc/wireguard;
+scp -r -P 177 /etc/wireguard/*.key root@BR-RTR.wsr:/etc/wireguard;
 
 #Установка и настройка клиента VPN WireGuard
 apt install wireguard -y
@@ -51,8 +51,8 @@ AllowedIPs = 0.0.0.0/0
 #Конвейерная установка на BR-RTR
 apt install wireguard wireguard-dkms -y;
 PubKey=`cat /etc/wireguard/public.key`;
-wg genkey | sudo tee /etc/wireguard/private.key | wg pubkey | sudo tee /etc/wireguard/public.key;
-PrKey=`cat /etc/wireguard/private.key`;
+wg genkey | sudo tee /etc/wireguard/cliprivate.key | wg pubkey | sudo tee /etc/wireguard/clipublic.key;
+PrKey=`cat /etc/wireguard/cliprivate.key`;
 echo '
 [Interface]
 PrivateKey = '$PrKey'
@@ -61,14 +61,14 @@ Address = 10.77.77.2/30
 [Peer]
 PublicKey = '$PubKey'
 Endpoint = CA-RTR.wsr:51820' > /etc/wireguard/wg0.conf;
-scp -P 177 /etc/wireguard/*.key root@CA-RTR.wsr:/etc/wireguard/;
+scp -P 177 /etc/wireguard/clipublic.key root@CA-RTR.wsr:/etc/wireguard/;
 
 #CA-RTR
-PubKey=`cat /etc/wireguard/public.key`;
+CliPubKey=`cat /etc/wireguard/clipublic.key`;
 echo '
 
 [Peer]
-PublicKey = '$PubKey'
+PublicKey = '$CliPubKey'
 ' >> /etc/wireguard/server.conf
 systemctl enable wg-quick@server --now;
 systemctl restart wg-quick@server;
