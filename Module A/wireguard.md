@@ -60,8 +60,7 @@ Address = 10.77.77.2/30
 
 [Peer]
 PublicKey = '$PubKey'
-Endpoint = CA-RTR.wsr:51820
-AllowedIPs = 0.0.0.0/0' > /etc/wireguard/wg0.conf;
+Endpoint = CA-RTR.wsr:51820' > /etc/wireguard/wg0.conf;
 scp -P 177 /etc/wireguard/*.key root@CA-RTR.wsr:/etc/wireguard/;
 
 #CA-RTR
@@ -70,8 +69,9 @@ echo '
 
 [Peer]
 PublicKey = '$PubKey'
-AllowedIPs = 0.0.0.0/0, ::/0' >> /etc/wireguard/server.conf
+' >> /etc/wireguard/server.conf
 systemctl enable wg-quick@server --now;
+systemctl restart wg-quick@server;
 ss -tunlp | grep :51820;
 
 
