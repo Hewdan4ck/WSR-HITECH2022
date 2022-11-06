@@ -4,10 +4,12 @@ net.ipv4.ip_forward = 1
 
 sysctl -p
 
+
+
 #Установка и настройка OpenConnect server на CA-RTR
-apt install debian-archive-keyring dirmngr
-vim /etc/apt/sources.list
-deb http://deb.debian.org/debian/ stretch main
+apt install debian-archive-keyring dirmngr -y;
+echo ' 
+deb http://deb.debian.org/debian/ stretch main' >> /etc/apt/sources.list;
 
 apt update
 apt install ocserv
