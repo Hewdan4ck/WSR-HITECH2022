@@ -1,3 +1,8 @@
+#Установка дебиан репозитория
+apt install debian-archive-keyring dirmngr -y;
+echo ' 
+deb http://deb.debian.org/debian/ stretch main' >> /etc/apt/sources.list;
+
 #Настройка IP маршрутизации
 echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf;
 sysctl -p;
@@ -26,7 +31,6 @@ subnet 10.0.0.0 netmask 255.255.255.0 {
 
 #NAT
 iptables -t nat -A POSTROUTING -s 0.0.0.0/0 -о <Интерфейс с выходом в интернет> -j MASQUERADE
-iptables-save > /etc/iptables.rules
 
 #DNS
 apt install bind9 bind9utils dnsutils -y;
