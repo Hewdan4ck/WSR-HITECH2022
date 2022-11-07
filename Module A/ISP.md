@@ -31,6 +31,8 @@ subnet 10.0.0.0 netmask 255.255.255.0 {
 
 #NAT
 iptables -t nat -A POSTROUTING -s 0.0.0.0/0 -о <Интерфейс с выходом в интернет> -j MASQUERADE
+apt install iptables-persistent -y
+https://frank.sauerburger.io/2018/05/27/make-your-iptables-rules-persistent-in-centos-7.html
 
 #DNS
 apt install bind9 bind9utils dnsutils -y;
